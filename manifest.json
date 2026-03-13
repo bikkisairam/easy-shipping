@@ -1,0 +1,43 @@
+{
+  "name": "Easy Shipping",
+  "description": "Autofills Amazon, eBay and Pirate Ship forms with box presets and live weight from a local USB-scale server.",
+  "version": "1.2.0",
+  "manifest_version": 3,
+
+  "icons": {
+    "16":  "icons/16.png",
+    "32":  "icons/32.png",
+    "48":  "icons/48.png",
+    "128": "icons/128.png"
+  },
+
+  "action": {
+    "default_icon": "icons/32.png",
+    "default_title": "Easy Shipping"
+  },
+
+  "permissions": ["scripting", "activeTab", "storage"],
+  "host_permissions": [
+    "*://*.amazon.com/*",
+    "*://*.ebay.com/*",
+    "*://*.pirateship.com/*",
+    "https://script.google.com/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.amazon.com/*",
+        "*://*.ebay.com/*",
+        "*://*.pirateship.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
