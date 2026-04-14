@@ -78,6 +78,7 @@
     <div class="toolbar">
       <strong>📦 Box Size</strong>
       <div>
+        <button id="unit-toggle" title="Toggle weight units">lb/oz</button>
         <button id="add-dim">＋</button>
         <button id="del-dim">🗑️</button>
         <button id="flip">▲</button>
