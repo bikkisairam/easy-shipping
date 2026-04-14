@@ -255,5 +255,23 @@
       .classList.toggle("hidden", collapsed);
   };
 
+  const updateUnitToggleButton = () => {
+    const btn = document.getElementById("unit-toggle");
+    if (currentUnit === "kg_g") {
+      btn.textContent = "kg/g";
+      btn.classList.add("kg-g-active");
+    } else {
+      btn.textContent = "lb/oz";
+      btn.classList.remove("kg-g-active");
+    }
+  };
+
+  document.getElementById("unit-toggle").onclick = () => {
+    currentUnit = currentUnit === "lb_oz" ? "kg_g" : "lb_oz";
+    saveUnitPreference(currentUnit);
+    updateUnitToggleButton();
+  };
+
+  updateUnitToggleButton();
   renderButtons();
 })();
