@@ -170,29 +170,33 @@
     document.body.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   };
 
-  /*──────── 3. main fill routine (UNCHANGED) ─────*/
+  /*──────── 3. main fill routine ─────*/
   const fillSiteForms = async ({ L, W, H }) => {
-    const { lb, oz } = await fetchWeight();
+    const { lb, oz, kg, g } = await fetchWeight();
+
+    // Determine which weight values to use based on current unit preference
+    const weight1 = currentUnit === "kg_g" ? kg : lb;
+    const weight2 = currentUnit === "kg_g" ? g : oz;
 
     trySetField(["#configuration-key-length",'input[name$=".dimensionX"]'],L);
     trySetField(["#configuration-key-width",'input[name$=".dimensionY"]'],W);
     trySetField(["#configuration-key-height",'input[name$=".dimensionZ"]'],H);
-    trySetField(["#configuration-key-weight-pounds",'input[name$=".weightPounds"]'],lb);
-    trySetField(["#configuration-key-weight-ounces",'input[name$=".weightOunces"]'],oz);
+    trySetField(["#configuration-key-weight-pounds",'input[name$=".weightPounds"]'],weight1);
+    trySetField(["#configuration-key-weight-ounces",'input[name$=".weightOunces"]'],weight2);
 
     trySetField(['#packageLength'],L);
     trySetField(['#packageWidth'],W);
     trySetField(['#packageHeight'],H);
-    trySetField(['input[aria-label="Package weight in pounds"]'],lb);
-    sendEnter(trySetField(['input[aria-label="Package weight in ounces"]'],oz));
+    trySetField(['input[aria-label="Package weight in pounds"]'],weight1);
+    sendEnter(trySetField(['input[aria-label="Package weight in ounces"]'],weight2));
 
     document.querySelector('[data-test-id="add-package-text-popover"]')?.click();
     setTimeout(() => {
       trySetField(['input[data-test-id="add-package-preload-input-0"]'],L);
       trySetField(['input[data-test-id="add-package-preload-input-1"]'],W);
       trySetField(['input[data-test-id="add-package-preload-input-2"]'],H);
-      trySetField(['input[data-test-id="shipping-weight-input-LB"]'],lb);
-      trySetField(['input[data-test-id="shipping-weight-input-OZ"]'],oz);
+      trySetField(['input[data-test-id="shipping-weight-input-LB"]'],weight1);
+      trySetField(['input[data-test-id="shipping-weight-input-OZ"]'],weight2);
       document.querySelector('[data-test-id="add-package-preload-apply"]')?.click();
     }, 400);
   };
