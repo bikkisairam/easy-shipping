@@ -1,0 +1,5 @@
+# PACE configuration for easy-shipping
+require_tests: false       # no local test runner — tests are written but not executed
+max_turns: 50
+max_file_chars: 20000
+max_total_chars: 120000
