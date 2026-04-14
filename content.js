@@ -142,12 +142,12 @@
 
   const fetchWeight = async () => {
     try {
-      const { weight_lb = 0, weight_oz = 0 } =
+      const { weight_lb = 0, weight_oz = 0, weight_kg = 0, weight_g = 0 } =
         await fetch("http://localhost:5000/weight").then(r => r.json());
-      return { lb: weight_lb, oz: weight_oz };
+      return { lb: weight_lb, oz: weight_oz, kg: weight_kg, g: weight_g };
     } catch {
       console.warn("⚠️ Scale server unreachable – using 0 lb 0 oz");
-      return { lb: 0, oz: 0 };
+      return { lb: 0, oz: 0, kg: 0, g: 0 };
     }
   };
 
