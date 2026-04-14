@@ -93,7 +93,19 @@ def get_order_status(order_id):
 @app.route('/weight')
 def get_weight():
     lb, oz = read_weight()
-    return jsonify({"weight_lb": lb, "weight_oz": oz})
+    
+    # Convert lb/oz to kg/g
+    total_oz = (lb * 16) + oz
+    total_grams = total_oz * 28.3495  # 1 oz = 28.3495 grams
+    kg = int(total_grams // 1000)
+    g = int(total_grams % 1000)
+    
+    return jsonify({
+        "weight_lb": lb,
+        "weight_oz": oz,
+        "weight_kg": kg,
+        "weight_g": g
+    })
 
 if __name__ == "__main__":
     app.run(port=5000)
