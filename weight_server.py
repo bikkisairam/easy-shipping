@@ -68,6 +68,28 @@ def read_weight():
 
     return 0, 0
 
+@app.route('/api/orders/<order_id>/status')
+def get_order_status(order_id):
+    """
+    Get the status of a shipping order by order ID.
+    Returns order status and estimated delivery date.
+    """
+    # Validate order ID format (alphanumeric only)
+    if not re.match(r'^[a-zA-Z0-9]+$', order_id):
+        return jsonify({'error': 'Invalid order ID format'}), 400
+    
+    # Check if order exists in database
+    if order_id not in ORDERS_DB:
+        return jsonify({'error': 'Order not found'}), 404
+    
+    # Return order status information
+    order = ORDERS_DB[order_id]
+    return jsonify({
+        'order_id': order['order_id'],
+        'status': order['status'],
+        'estimated_delivery_date': order['estimated_delivery_date']
+    }), 200
+
 @app.route('/weight')
 def get_weight():
     lb, oz = read_weight()
