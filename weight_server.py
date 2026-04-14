@@ -3,9 +3,34 @@ from flask_cors import CORS
 import hid
 import struct
 import math
+import re
 
 app = Flask(__name__)
 CORS(app)
+
+# In-memory order database for tracking shipping orders
+ORDERS_DB = {
+    '12345': {
+        'order_id': '12345',
+        'status': 'in_transit',
+        'estimated_delivery_date': '2024-02-15'
+    },
+    '67890': {
+        'order_id': '67890',
+        'status': 'shipped',
+        'estimated_delivery_date': '2024-02-20'
+    },
+    '11111': {
+        'order_id': '11111',
+        'status': 'delivered',
+        'estimated_delivery_date': '2024-02-10'
+    },
+    '54321': {
+        'order_id': '54321',
+        'status': 'pending',
+        'estimated_delivery_date': None
+    }
+}
 
 def find_dymo_scale():
     for device in hid.enumerate():
@@ -42,6 +67,28 @@ def read_weight():
         print("✗ Error reading DYMO scale:", e)
 
     return 0, 0
+
+@app.route('/api/orders/<order_id>/status')
+def get_order_status(order_id):
+    """
+    Get the status of a shipping order by order ID.
+    Returns order status and estimated delivery date.
+    """
+    # Validate order ID format (alphanumeric only)
+    if not re.match(r'^[a-zA-Z0-9]+$', order_id):
+        return jsonify({'error': 'Invalid order ID format'}), 400
+    
+    # Check if order exists in database
+    if order_id not in ORDERS_DB:
+        return jsonify({'error': 'Order not found'}), 404
+    
+    # Return order status information
+    order = ORDERS_DB[order_id]
+    return jsonify({
+        'order_id': order['order_id'],
+        'status': order['status'],
+        'estimated_delivery_date': order['estimated_delivery_date']
+    }), 200
 
 @app.route('/weight')
 def get_weight():
