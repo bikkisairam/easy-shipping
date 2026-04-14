@@ -9,6 +9,7 @@
 
   /*──────── STORAGE ────────*/
   const STORAGE_KEY = "shipping_dimensions";
+  const UNIT_STORAGE_KEY = "shipping_unit_preference";
 
   const DEFAULT_DIMS = [
     "14,4,4",
@@ -29,8 +30,15 @@
   const saveDims = dims =>
     localStorage.setItem(STORAGE_KEY, JSON.stringify(dims));
 
+  const loadUnitPreference = () =>
+    localStorage.getItem(UNIT_STORAGE_KEY) || "lb_oz";
+
+  const saveUnitPreference = unit =>
+    localStorage.setItem(UNIT_STORAGE_KEY, unit);
+
   let deleteMode = false;
   let collapsed = false;
+  let currentUnit = loadUnitPreference();
 
   /*──────── 1. floating widget ────────*/
   const panel = document.createElement("div");
