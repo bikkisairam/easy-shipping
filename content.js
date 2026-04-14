@@ -59,6 +59,9 @@
         padding:2px 6px;border:1px solid #888;border-radius:4px;
         background:#eee;cursor:pointer;font-size:12px;
       }
+      #unit-toggle.kg-g-active{
+        background:#2196f3;color:#fff;font-weight:600;
+      }
       #box-buttons{
         display:flex;flex-direction:column;gap:6px;
       }
